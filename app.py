@@ -7,7 +7,7 @@ import io
 from openai import OpenAI
 
 # Initialize OpenAI client
-client = OpenAI("sss")
+client = OpenAI()
 
 # Your chosen model
 MODEL = "gpt-4-1106-preview"  # "gpt-3.5-turbo"
@@ -30,34 +30,34 @@ st.set_page_config(page_title="AI Lawyer", page_icon="⚖️")
 st.sidebar.title("Virtual GPT Assistant")
 st.sidebar.divider()
 
-# File uploader for CSV, XLS, XLSX
-uploaded_file = st.file_uploader("Upload your file", type=["csv", "xls", "xlsx"])
+## File uploader for CSV, XLS, XLSX
+# uploaded_file = st.file_uploader("Upload your file", type=["csv", "xls", "xlsx"])
 
-if uploaded_file is not None:
-    # Determine the file type
-    file_type = uploaded_file.type
-    try:
-        # Read the file into a Pandas DataFrame
-        if file_type == "text/csv":
-            df = pd.read_csv(uploaded_file)
-        elif file_type in ["application/vnd.ms-excel",
-                           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]:
-            df = pd.read_excel(uploaded_file)
+# if uploaded_file is not None:
+#     # Determine the file type
+#     file_type = uploaded_file.type
+#     try:
+#         # Read the file into a Pandas DataFrame
+#         if file_type == "text/csv":
+#             df = pd.read_csv(uploaded_file)
+#         elif file_type in ["application/vnd.ms-excel",
+#                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]:
+#             df = pd.read_excel(uploaded_file)
 
-        # Convert DataFrame to JSON
-        json_str = df.to_json(orient='records', indent=4)
-        file_stream = io.BytesIO(json_str.encode())
+#         # Convert DataFrame to JSON
+#         json_str = df.to_json(orient='records', indent=4)
+#         file_stream = io.BytesIO(json_str.encode())
 
-        # Upload JSON data to OpenAI and store the file ID
-        file_response = client.files.create(file=file_stream, purpose='answers')
-        st.session_state.file_id = file_response.id
-        st.success("File uploaded successfully to OpenAI!")
+#         # Upload JSON data to OpenAI and store the file ID
+#         file_response = client.files.create(file=file_stream, purpose='answers')
+#         st.session_state.file_id = file_response.id
+#         st.success("File uploaded successfully to OpenAI!")
 
-        # Optional: Display and Download JSON
-        st.text_area("JSON Output", json_str, height=300)
-        st.download_button(label="Download JSON", data=json_str, file_name="converted.json", mime="application/json")
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
+#         # Optional: Display and Download JSON
+#         st.text_area("JSON Output", json_str, height=300)
+#         st.download_button(label="Download JSON", data=json_str, file_name="converted.json", mime="application/json")
+#     except Exception as e:
+#         st.error(f"An error occurred: {e}")
 
 # Initialize OpenAI assistant
 if "assistant" not in st.session_state:
