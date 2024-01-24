@@ -2,11 +2,7 @@
 .streamlit/secrets.toml
 *.toml
 
-img
-data
-
 .devcontainer
-utils.py
 .jpg
 .jpeg
 .png
