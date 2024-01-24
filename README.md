@@ -1,7 +1,4 @@
-# Welcome to streamlit
+# Welcome to Virtial GPT Lawyer Web Application
 
-This is the app you get when you run `streamlit hello`, extracted as its own app.
-
-Edit [Hello.py](./Hello.py) to customize this app to your heart's desire. ❤️
-
-Check it out on [Streamlit Community Cloud](https://st-hello-app.streamlit.app/)
+This app may help you to get US tax law related references and articles.
+Check it out on [AI Lawyer](https://iohanngrig.streamlit.app/)
