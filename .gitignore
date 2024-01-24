@@ -1,0 +1,15 @@
+.streamlit
+.streamlit/secrets.toml
+*.toml
+
+img
+data
+
+.devcontainer
+utils.py
+.jpg
+.jpeg
+.png
+.flac
+
+__pycache__

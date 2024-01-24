@@ -1,4 +1,3 @@
-# Welcome to Virtial GPT Lawyer Web Application
+# Demo Apps
 
-This app may help you to get US tax law related references and articles.
-Check it out on [AI Lawyer](https://iohanngrig.streamlit.app/)
+This is a collection of simple apps: [launch](https://iohanngrig.streamlit.app/)
