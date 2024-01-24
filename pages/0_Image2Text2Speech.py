@@ -86,10 +86,15 @@ def generate_speech_from_text(message: str) -> Any:
     payloads: dict[str, str] = {
         "inputs": message
     }
-
     response: Any = requests.post(API_URL, headers=headers, json=payloads)
     with open("generated_audio.flac", "wb") as file:
         file.write(response.content)
+        st.download_button(
+                label="Download audio (FLAC) file",
+                data=response.content,
+                file_name='generated_audio.flac',
+                mime='flac',
+            )
 
 
 def main() -> None:
@@ -119,14 +124,14 @@ def main() -> None:
         progress_bar(100)
         scenario: str = generate_text_from_image(uploaded_file.name)
         story: str = generate_story_from_text(scenario)
-        generate_speech_from_text(story)
+        #generate_speech_from_text(story)
 
         with st.expander("Generated scenario"):
             st.write(scenario)
         with st.expander("Generated story"):
             st.write(story)
 
-        st.audio("generated_audio.flac")
+        #st.audio("generated_audio.flac")
 
 
 if __name__ == "__main__":
