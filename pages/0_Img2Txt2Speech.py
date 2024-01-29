@@ -1,4 +1,3 @@
-import os
 import time
 from typing import Any
 
@@ -31,7 +30,6 @@ def progress_bar(amount_of_time: int) -> Any:
     time.sleep(1)
     my_bar.empty()
 
-
 def generate_text_from_image(url: str) -> str:
     """
     A function that uses the blip model to generate text from an image.
@@ -39,13 +37,10 @@ def generate_text_from_image(url: str) -> str:
     :return: text: generated text from the image
     """
     image_to_text: Any = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
-
     generated_text: str = image_to_text(url)[0]["generated_text"]
-
     print(f"IMAGE INPUT: {url}")
     print(f"GENERATED TEXT OUTPUT: {generated_text}")
     return generated_text
-
 
 def generate_story_from_text(scenario: str) -> str:
     """
@@ -61,19 +56,13 @@ def generate_story_from_text(scenario: str) -> str:
     CONTEXT: {scenario}
     STORY:
     """
-
     prompt: PromptTemplate = PromptTemplate(template=prompt_template, input_variables=["scenario"])
-
     llm: Any = ChatOpenAI(model_name=MODEL, temperature=1)
-
     story_llm: Any = LLMChain(llm=llm, prompt=prompt, verbose=True)
-
     generated_story: str = story_llm.predict(scenario=scenario)
-
     print(f"TEXT INPUT: {scenario}")
     print(f"GENERATED STORY OUTPUT: {generated_story}")
     return generated_story
-
 
 def generate_speech_from_text(message: str) -> Any:
     """
@@ -96,24 +85,15 @@ def generate_speech_from_text(message: str) -> Any:
                 mime='flac',
             )
 
-
 def main() -> None:
-    """
-    Main function
-    :return: None
-    """
     st.set_page_config(page_title="Image to audio story", page_icon="img/logo.png", layout="wide")
-
     st.markdown(css_code, unsafe_allow_html=True)
-
     with st.sidebar:
         st.image("img/kandinsky.jpg")
         #st.write("---")
         st.title("Image to Story")
-
-    st.header("Generate audio story from an image")
+    st.header("🎭 🔗 Generate audio story from an image")
     uploaded_file: Any = st.file_uploader("Please choose a file to upload", type=["jpg", "png", "jpeg", "tif"])
-
     if uploaded_file is not None:
         print(uploaded_file)
         bytes_data: Any = uploaded_file.getvalue()
@@ -122,16 +102,18 @@ def main() -> None:
         st.image(uploaded_file, caption="Uploaded Image",
                  use_column_width=True)
         progress_bar(100)
-        scenario: str = generate_text_from_image(uploaded_file.name)
-        story: str = generate_story_from_text(scenario)
-        #generate_speech_from_text(story)
-
-        with st.expander("Generated scenario"):
-            st.write(scenario)
-        with st.expander("Generated story"):
-            st.write(story)
-
-        #st.audio("generated_audio.flac")
+        
+        with st.spinner('Generating Text from Image...'):
+            scenario: str = generate_text_from_image(uploaded_file.name)
+            with st.expander("Generated scenario"):
+                st.write(scenario)
+        with st.spinner('Generating Story from Text...'):
+            story: str = generate_story_from_text(scenario)
+            with st.expander("Generated story"):
+                st.write(story)
+        with st.spinner('Generating Speech from Text...'):
+            generate_speech_from_text(story)
+            st.audio("generated_audio.flac")
 
 
 if __name__ == "__main__":
